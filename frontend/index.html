@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Help Desk | Gerenciamento de Tickets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- CABEÇALHO GLOBAL -->
+  <header>
+    <div class="container header-content">
+      <div class="brand">
+        <div class="brand-icon">🎫</div>
+        <span>HelpDesk Central</span>
+      </div>
+
+      <div id="header-user-nav" class="user-profile hidden">
+        <div class="user-info">
+          <div id="nav-user-name" class="user-name">Usuário</div>
+          <span id="nav-user-role-badge" class="badge">PERFIL</span>
+        </div>
+        <button id="btn-logout" class="btn btn-secondary btn-sm">
+          Sair 🚪
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL (SPA) -->
+  <main class="container">
+
+    <!-- 1. TELA DE LOGIN -->
+    <section id="view-login" class="view">
+      <div class="login-card">
+        <div class="login-header">
+          <h2>Acesse o Sistema</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Insira suas credenciais para gerenciar seus tickets</p>
+        </div>
+
+        <form id="form-login">
+          <div class="form-group">
+            <label for="login-email">E-mail corporativo</label>
+            <input type="email" id="login-email" class="form-control" placeholder="exemplo@helpdesk.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Senha de acesso</label>
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            Entrar no Sistema
+          </button>
+        </form>
+
+        <div class="demo-box">
+          <div class="demo-title">💡 Acesso Rápido para Testes:</div>
+          <div class="demo-btn-group">
+            <button class="btn btn-secondary btn-sm" onclick="App.fillDemo('admin@helpdesk.com', 'admin123')">
+              Entrar como Admin
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="App.fillDemo('usuario@helpdesk.com', 'user123')">
+              Entrar como Usuário
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PAINEL DO ADMINISTRADOR -->
+    <section id="view-admin" class="view hidden">
+      <div class="tabs">
+        <button id="tab-admin-tickets" class="tab-btn admin-tab-btn active">
+          📋 Gerenciamento de Tickets
+        </button>
+        <button id="tab-admin-users" class="tab-btn admin-tab-btn">
+          👥 Gerenciamento de Usuários
+        </button>
+      </div>
+
+      <!-- SEÇÃO DE TICKETS DO ADMIN -->
+      <div id="admin-tickets-section" class="admin-tab-content">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-title">Total de Tickets</span>
+            <span id="kpi-total" class="stat-value">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-title">Abertos</span>
+            <span id="kpi-open" class="stat-value" style="color: var(--warning);">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-title">Em Andamento</span>
+            <span id="kpi-progress" class="stat-value" style="color: var(--info);">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-title">Resolvidos / Fechados</span>
+            <span id="kpi-resolved" class="stat-value" style="color: var(--success);">0</span>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <h3 style="font-size: 1.1rem;">Lista de Chamados Globais</h3>
+          <div class="filter-group">
+            <label style="font-size: 0.85rem; color: var(--text-muted);">Filtrar por Status:</label>
+            <select id="admin-filter-status" class="form-select">
+              <option value="">Todos os Status</option>
+              <option value="aberto">Aberto</option>
+              <option value="em_andamento">Em Andamento</option>
+              <option value="resolvido">Resolvido</option>
+              <option value="fechado">Fechado</option>
+            </select>
+
+            <label style="font-size: 0.85rem; color: var(--text-muted); margin-left: 0.5rem;">Prioridade:</label>
+            <select id="admin-filter-priority" class="form-select">
+              <option value="">Todas</option>
+              <option value="baixa">Baixa</option>
+              <option value="media">Média</option>
+              <option value="alta">Alta</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="admin-tickets-list" class="tickets-grid">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+
+      <!-- SEÇÃO DE USUÁRIOS DO ADMIN -->
+      <div id="admin-users-section" class="admin-tab-content hidden">
+        <div class="toolbar">
+          <h3 style="font-size: 1.1rem;">Usuários Cadastrados</h3>
+          <button class="btn btn-primary btn-sm" onclick="App.openModal('modal-create-user')">
+            ➕ Cadastrar Novo Usuário
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Perfil</th>
+                <th>Status</th>
+                <th>Criado em</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody">
+              <!-- Renderizado via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PAINEL DO USUÁRIO -->
+    <section id="view-user" class="view hidden">
+      <div class="toolbar">
+        <div>
+          <h2>Meus Tickets</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Acompanhe o andamento dos seus chamados de suporte</p>
+        </div>
+        <button class="btn btn-primary" onclick="App.openModal('modal-create-ticket')">
+          ➕ Abrir Novo Ticket
+        </button>
+      </div>
+
+      <div class="toolbar" style="margin-top: 1rem;">
+        <div class="filter-group">
+          <label style="font-size: 0.85rem; color: var(--text-muted);">Status:</label>
+          <select id="user-filter-status" class="form-select">
+            <option value="">Todos os Status</option>
+            <option value="aberto">Aberto</option>
+            <option value="em_andamento">Em Andamento</option>
+            <option value="resolvido">Resolvido</option>
+            <option value="fechado">Fechado</option>
+          </select>
+
+          <label style="font-size: 0.85rem; color: var(--text-muted); margin-left: 0.5rem;">Prioridade:</label>
+          <select id="user-filter-priority" class="form-select">
+            <option value="">Todas</option>
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="user-tickets-list" class="tickets-grid">
+        <!-- Renderizado via JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAIS -->
+
+  <!-- MODAL: CRIAR NOVO USUÁRIO (ADMIN) -->
+  <div id="modal-create-user" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Cadastrar Novo Usuário</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-create-user">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="new-user-name">Nome Completo</label>
+            <input type="text" id="new-user-name" class="form-control" required placeholder="Ex: Maria Santos">
+          </div>
+          <div class="form-group">
+            <label for="new-user-email">E-mail</label>
+            <input type="email" id="new-user-email" class="form-control" required placeholder="maria@helpdesk.com">
+          </div>
+          <div class="form-group">
+            <label for="new-user-password">Senha Inicial</label>
+            <input type="password" id="new-user-password" class="form-control" required placeholder="Mínimo 4 caracteres">
+          </div>
+          <div class="form-group">
+            <label for="new-user-role">Perfil de Acesso</label>
+            <select id="new-user-role" class="form-select" required>
+              <option value="usuario">Usuário Comum</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Cadastrar Usuário</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: REDEFINIR SENHA (ADMIN) -->
+  <div id="modal-reset-password" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Alterar Senha do Usuário</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-reset-password">
+        <input type="hidden" id="reset-user-id">
+        <div class="modal-body">
+          <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+            Alterando senha para: <strong id="reset-user-name-display" style="color: #fff;">-</strong>
+          </p>
+          <div class="form-group">
+            <label for="reset-new-password">Nova Senha</label>
+            <input type="password" id="reset-new-password" class="form-control" required placeholder="Mínimo 4 caracteres">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Nova Senha</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: RESPONDER TICKET / STATUS (ADMIN) -->
+  <div id="modal-respond-ticket" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Responder Ticket</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-respond-ticket">
+        <input type="hidden" id="respond-ticket-id">
+        <div class="modal-body">
+          <p style="margin-bottom: 1rem; font-weight: 600; color: var(--primary);" id="respond-ticket-title">Título</p>
+          
+          <div class="form-group">
+            <label for="respond-text">Resposta do Suporte</label>
+            <textarea id="respond-text" class="form-control" required placeholder="Escreva a solução ou orientações para o usuário..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="respond-status">Atualizar Status do Ticket</label>
+            <select id="respond-status" class="form-select">
+              <option value="aberto">Aberto</option>
+              <option value="em_andamento">Em Andamento</option>
+              <option value="resolvido">Resolvido</option>
+              <option value="fechado">Fechado</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Enviar Resposta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CRIAR NOVO TICKET (USUÁRIO) -->
+  <div id="modal-create-ticket" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Abrir Novo Ticket de Suporte</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="form-create-ticket">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="ticket-title-input">Título da Solicitação</label>
+            <input type="text" id="ticket-title-input" class="form-control" required placeholder="Ex: Problema no acesso ao sistema de e-mails">
+          </div>
+
+          <div class="form-group">
+            <label for="ticket-priority-input">Nível de Prioridade</label>
+            <select id="ticket-priority-input" class="form-select" required>
+              <option value="baixa">Baixa (Dúvidas ou sugestões)</option>
+              <option value="media" selected>Média (Lentidão ou falha pontual)</option>
+              <option value="alta">Alta (Bloqueio total de trabalho)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="ticket-desc-input">Descrição Detalhada</label>
+            <textarea id="ticket-desc-input" class="form-control" required placeholder="Descreva em detalhes o que está acontecendo e os passos para reproduzir..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Enviar Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/user.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

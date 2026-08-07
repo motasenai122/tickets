@@ -1,0 +1,29 @@
+[
+  {
+    "id": "acfba41d-80cd-4f01-a658-8669e29dba4f",
+    "nome": "Administrador do Sistema",
+    "email": "admin@helpdesk.com",
+    "senha": "$2a$10$vXWM55zvoDPPqU26GBo8r.iRdETZRLs47bQzPnOQEO0eN7NQ9Hcoy",
+    "perfil": "admin",
+    "ativo": true,
+    "criadoEm": "2026-08-07T16:48:48.868Z"
+  },
+  {
+    "id": "145b3f0f-95c4-4880-8519-eeed4956c7fa",
+    "nome": "João Silva",
+    "email": "usuario@helpdesk.com",
+    "senha": "$2a$10$uqIm7o97qQcYG.VzUm7Gu.RS9hD8eXqZeGTPvk.W6LWbIeIlASLpK",
+    "perfil": "usuario",
+    "ativo": true,
+    "criadoEm": "2026-08-07T16:48:49.028Z"
+  },
+  {
+    "id": "0b7ef016-66cd-445f-a3eb-a8b359404d91",
+    "nome": "Carlos Eduardo",
+    "email": "carlos@helpdesk.com",
+    "senha": "$2a$10$3MJpNff0PpDOSe2IMQjt3.uJx2kjMOp21ry0LUtA8N6wGteTCAJ2e",
+    "perfil": "usuario",
+    "ativo": false,
+    "criadoEm": "2026-08-07T16:50:34.698Z"
+  }
+]

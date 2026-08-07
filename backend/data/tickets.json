@@ -1,0 +1,14 @@
+[
+  {
+    "id": "37bfb3c4-a332-4b50-9d3a-2956773c08e9",
+    "titulo": "Lentidão no sistema financeiro",
+    "descricao": "O módulo de relatórios está demorando mais de 2 minutos para carregar.",
+    "status": "resolvido",
+    "prioridade": "alta",
+    "criadoPor": "145b3f0f-95c4-4880-8519-eeed4956c7fa",
+    "respondidoPor": "acfba41d-80cd-4f01-a658-8669e29dba4f",
+    "resposta": "Realizamos a otimização dos índices da tabela de relatórios. O carregamento foi reduzido para 3 segundos.",
+    "criadoEm": "2026-08-07T16:50:34.606Z",
+    "atualizadoEm": "2026-08-07T16:50:34.615Z"
+  }
+]
