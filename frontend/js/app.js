@@ -117,7 +117,11 @@ const App = {
   }
 };
 
+// Expor o objeto App no objeto window para acessibilidade global
+window.App = App;
+
 // Inicializa a aplicação ao carregar o DOM
 document.addEventListener('DOMContentLoaded', () => {
   App.init();
 });
+

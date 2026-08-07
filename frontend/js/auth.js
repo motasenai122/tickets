@@ -21,8 +21,12 @@ const Auth = {
 
   logout() {
     API.removeToken();
-    window.App.showLoginView();
-    window.App.showToast('Sessão encerrada com sucesso.', 'info');
+    if (window.App && typeof window.App.showLoginView === 'function') {
+      window.App.showLoginView();
+      window.App.showToast('Sessão encerrada com sucesso.', 'info');
+    } else {
+      window.location.reload();
+    }
   },
 
   async verifySession() {
