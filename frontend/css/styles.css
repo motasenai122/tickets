@@ -8,12 +8,12 @@
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --primary-light: rgba(99, 102, 241, 0.15);
+  --primary: #dc2626;
+  --primary-hover: #b91c1c;
+  --primary-light: rgba(220, 38, 38, 0.15);
   
-  --accent-admin: #8b5cf6;
-  --accent-user: #06b6d4;
+  --accent-admin: #e11d48;
+  --accent-user: #f43f5e;
 
   --success: #10b981;
   --success-bg: rgba(16, 185, 129, 0.15);
@@ -142,7 +142,7 @@ body {
 
 .form-control:focus, .form-select:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25);
 }
 
 textarea.form-control {
